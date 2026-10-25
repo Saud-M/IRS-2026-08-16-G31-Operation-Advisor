@@ -1,0 +1,387 @@
+{
+  "plant": {
+    "id": "OGP-01",
+    "name": "Offshore Gas Processing Train A",
+    "description": "High-pressure three-phase oil, gas, and water separation with two-stage compression."
+  },
+  "assets": [
+    {
+      "tag": "V-101",
+      "name": "High-Pressure Three-Phase Separator",
+      "type": "Vessel",
+      "design_pressure_barg": 45.0,
+      "operating_pressure_barg": 30.0,
+      "subcomponents": ["Inlet_Vane", "Weir_Plate", "Mist_Extractor_Demister", "Oil_Bucket", "Water_Boot"]
+    },
+    {
+      "tag": "V-102",
+      "name": "Compressor Suction Scrubber",
+      "type": "Vessel",
+      "design_pressure_barg": 45.0,
+      "operating_pressure_barg": 29.8,
+      "subcomponents": ["Cyclonic_Demister", "High_Level_Float", "Liquid_Drain_Valve"]
+    },
+    {
+      "tag": "K-101",
+      "name": "Stage 1 Centrifugal Gas Compressor",
+      "type": "Compressor",
+      "rated_power_kw": 3500.0,
+      "surge_margin_min_pct": 15.0,
+      "subcomponents": ["Impeller", "Anti_Surge_Recycle_Valve", "Dry_Gas_Seals", "Thrust_Bearing"]
+    },
+    {
+      "tag": "E-101",
+      "name": "Inter-Stage Gas Cooler",
+      "type": "Heat_Exchanger",
+      "subcomponents": ["Tube_Bundle", "Cooling_Water_Regulator"]
+    },
+    {
+      "tag": "K-102",
+      "name": "Stage 2 Centrifugal Gas Compressor",
+      "type": "Compressor",
+      "rated_power_kw": 4200.0,
+      "subcomponents": ["Impeller", "Discharge_Check_Valve"]
+    }
+  ],
+  "sensors": [
+    {
+      "tag": "PT-101",
+      "name": "Separator Operating Pressure",
+      "unit": "barg",
+      "asset_tag": "V-101",
+      "nominal": 30.0,
+      "alarms": {"PAL": 26.0, "PAH": 34.0, "PAHH": 36.5}
+    },
+    {
+      "tag": "LT-101",
+      "name": "Hydrocarbon Liquid Level",
+      "unit": "%",
+      "asset_tag": "V-101",
+      "nominal": 50.0,
+      "alarms": {"LAL": 25.0, "LAH": 70.0, "LAHH": 85.0}
+    },
+    {
+      "tag": "LT-102",
+      "name": "Oil-Water Interface Level",
+      "unit": "%",
+      "asset_tag": "V-101",
+      "nominal": 25.0,
+      "alarms": {"LAL": 10.0, "LAH": 40.0, "LAHH": 50.0}
+    },
+    {
+      "tag": "TT-101",
+      "name": "Separator Inlet Temperature",
+      "unit": "°C",
+      "asset_tag": "V-101",
+      "nominal": 45.0,
+      "alarms": {"TAL": 25.0, "TAH": 65.0}
+    },
+    {
+      "tag": "FT-101",
+      "name": "Gas Export Flow Rate",
+      "unit": "Sm3/h",
+      "asset_tag": "V-101",
+      "nominal": 90000.0,
+      "alarms": {"FAL": 60000.0, "FAH": 110000.0}
+    },
+    {
+      "tag": "DP-101",
+      "name": "Suction Demister Differential Pressure",
+      "unit": "bar",
+      "asset_tag": "V-102",
+      "nominal": 0.10,
+      "alarms": {"DPAH": 0.45, "DPAHH": 0.60}
+    },
+    {
+      "tag": "ST-101",
+      "name": "Compressor Shaft Vibration",
+      "unit": "mm/s",
+      "asset_tag": "K-101",
+      "nominal": 2.0,
+      "alarms": {"VAH": 4.5, "VAHH": 7.1}
+    }
+  ],
+  "symptoms": [
+    {
+      "id": "SYM_HIGH_PRESSURE",
+      "name": "High Separator Pressure",
+      "sensor_tag": "PT-101",
+      "condition": "PT-101 >= 34.0 barg",
+      "asset_tag": "V-101"
+    },
+    {
+      "id": "SYM_LOW_PRESSURE",
+      "name": "Low Separator Pressure",
+      "sensor_tag": "PT-101",
+      "condition": "PT-101 <= 26.0 barg",
+      "asset_tag": "V-101"
+    },
+    {
+      "id": "SYM_HIGH_LEVEL",
+      "name": "High Hydrocarbon Liquid Level",
+      "sensor_tag": "LT-101",
+      "condition": "LT-101 >= 70.0 %",
+      "asset_tag": "V-101"
+    },
+    {
+      "id": "SYM_LOW_INTERFACE",
+      "name": "Low Interface Reading (Apparent)",
+      "sensor_tag": "LT-102",
+      "condition": "LT-102 <= 10.0 %",
+      "asset_tag": "V-101"
+    },
+    {
+      "id": "SYM_HIGH_DEMISTER_DP",
+      "name": "High Demister Differential Pressure",
+      "sensor_tag": "DP-101",
+      "condition": "DP-101 >= 0.45 bar",
+      "asset_tag": "V-102"
+    },
+    {
+      "id": "SYM_HIGH_VIBRATION",
+      "name": "High Compressor Shaft Vibration",
+      "sensor_tag": "ST-101",
+      "condition": "ST-101 >= 4.5 mm/s",
+      "asset_tag": "K-101"
+    },
+    {
+      "id": "SYM_LOW_GAS_FLOW",
+      "name": "Low Gas Discharge Flow",
+      "sensor_tag": "FT-101",
+      "condition": "FT-101 <= 60000.0 Sm3/h",
+      "asset_tag": "V-101"
+    },
+    {
+      "id": "SYM_HIGH_SCRUBBER_LEVEL",
+      "name": "Suction Scrubber Liquid Accumulation",
+      "sensor_tag": "V102_level",
+      "condition": "V102_scrubber_level >= 25.0 %",
+      "asset_tag": "V-102"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H01",
+      "code": "PCV_101_STICTION_CLOSED",
+      "name": "Gas Control Valve (PCV-101) Stuck Closed / Actuator Air Failure",
+      "target_asset": "V-101",
+      "description": "PCV-101 valve trim is mechanically stuck or pneumatic supply pressure failed, restricting gas outflow and building high vessel pressure.",
+      "primary_symptoms": ["SYM_HIGH_PRESSURE"],
+      "secondary_symptoms": ["SYM_LOW_GAS_FLOW"],
+      "required_checks": ["CHK_01_LOCAL_PCV_STEM", "CHK_02_PCV_AIR_SUPPLY"],
+      "mitigations": ["ACT_01_SWITCH_MANUAL_BYPASS", "ACT_06_DIVERT_TO_FLARE"],
+      "citations": ["SOP-V101-SEC2", "HAZOP-V101-NOD01"]
+    },
+    {
+      "id": "H02",
+      "code": "PCV_101_FAILED_OPEN",
+      "name": "Gas Control Valve (PCV-101) Stuck Open",
+      "target_asset": "V-101",
+      "description": "PCV-101 failed fully open, causing uncontrolled depressurization of separator V-101.",
+      "primary_symptoms": ["SYM_LOW_PRESSURE"],
+      "secondary_symptoms": [],
+      "required_checks": ["CHK_01_LOCAL_PCV_STEM"],
+      "mitigations": ["ACT_01_SWITCH_MANUAL_BYPASS"],
+      "citations": ["SOP-V101-SEC2"]
+    },
+    {
+      "id": "H03",
+      "code": "SEPARATOR_FOAMING_CARRYOVER",
+      "name": "Separator Foaming and Liquid Carryover into Demister Pad",
+      "target_asset": "V-101",
+      "description": "Crude oil surfactant foaming and high superficial vapor velocity cause liquid droplet entrainment, blinding demister pad and flooding suction scrubber V-102.",
+      "primary_symptoms": ["SYM_HIGH_DEMISTER_DP", "SYM_HIGH_SCRUBBER_LEVEL"],
+      "secondary_symptoms": ["SYM_HIGH_LEVEL"],
+      "required_checks": ["CHK_03_DEMISTER_DP_DRAIN", "CHK_06_SCRUBBER_BOOT_DRAIN"],
+      "mitigations": ["ACT_02_INJECT_ANTIFOAM_CHEMICAL", "ACT_05_PINCH_WELLHEAD_CHOKE"],
+      "citations": ["SOP-V101-SEC4", "HAZOP-V101-NOD01"]
+    },
+    {
+      "id": "H04",
+      "code": "COMPRESSOR_K101_SURGE",
+      "name": "Stage 1 Centrifugal Compressor (K-101) Aerodynamic Surge",
+      "target_asset": "K-101",
+      "description": "Flow starved below surge limit line or anti-surge valve ASV-101 failed to recycle, producing aerodynamic flow reversal and destructive high shaft vibration.",
+      "primary_symptoms": ["SYM_HIGH_VIBRATION"],
+      "secondary_symptoms": ["SYM_LOW_GAS_FLOW"],
+      "required_checks": ["CHK_05_ASV_RECYCLE_VALVE", "CHK_07_COMPRESSOR_SUCTION_FILTER"],
+      "mitigations": ["ACT_03_OPEN_ANTISURGE_RECYCLE"],
+      "citations": ["SOP-K101-SEC1", "HAZOP-K101-NOD02"]
+    },
+    {
+      "id": "H05",
+      "code": "EMULSION_PAD_LT102_DRIFT",
+      "name": "Emulsion Rag Layer Growth and Interface Transmitter (LT-102) Drift",
+      "target_asset": "V-101",
+      "description": "Intermediate emulsion rag layer creates dielectric and density gradient errors, causing LT-102 to read low while water accumulates in oil compartment.",
+      "primary_symptoms": ["SYM_LOW_INTERFACE"],
+      "secondary_symptoms": ["SYM_HIGH_LEVEL"],
+      "required_checks": ["CHK_04_THIEF_SAMPLE_EMULSION"],
+      "mitigations": ["ACT_04_FLUSH_INTERFACE_BRIDLE", "ACT_02_INJECT_ANTIFOAM_CHEMICAL"],
+      "citations": ["SOP-V101-SEC5"]
+    },
+    {
+      "id": "H06",
+      "code": "WELLHEAD_SLUG_INFLUX",
+      "name": "Transient Upstream Wellhead Slugging Influx",
+      "target_asset": "V-101",
+      "description": "Pipeline liquid accumulation intermittently surges into separator, causing cyclical simultaneous swings in pressure and liquid levels.",
+      "primary_symptoms": ["SYM_HIGH_LEVEL", "SYM_HIGH_PRESSURE"],
+      "secondary_symptoms": ["SYM_HIGH_DEMISTER_DP"],
+      "required_checks": ["CHK_01_LOCAL_PCV_STEM", "CHK_03_DEMISTER_DP_DRAIN"],
+      "mitigations": ["ACT_05_PINCH_WELLHEAD_CHOKE"],
+      "citations": ["SOP-WELL-SEC2"]
+    },
+    {
+      "id": "H07",
+      "code": "NORMAL_STEADY_STATE",
+      "name": "Nominal Steady-State Production Operation",
+      "target_asset": "V-101",
+      "description": "All process variables, control valves, and compressor parameters operating within safe design envelopes.",
+      "primary_symptoms": [],
+      "secondary_symptoms": [],
+      "required_checks": [],
+      "mitigations": [],
+      "citations": ["SOP-V101-SEC2"]
+    }
+  ],
+  "checks": [
+    {
+      "id": "CHK_01_LOCAL_PCV_STEM",
+      "name": "Inspect Local PCV-101 Valve Stem & Actuator Position",
+      "target_equipment": "PCV-101",
+      "type": "Visual / Mechanical Check",
+      "instructions": "Verify physical stem travel indicator against control room command percentage (e.g. 50% requested vs 10% actual indicates mechanical binding)."
+    },
+    {
+      "id": "CHK_02_PCV_AIR_SUPPLY",
+      "name": "Check Instrument Air Supply Pressure to PCV-101 Positioner",
+      "target_equipment": "PCV-101",
+      "type": "Pneumatic Check",
+      "instructions": "Verify local air regulator gauge reads between 4.0 - 5.5 barg. Low air pressure prevents valve from holding open."
+    },
+    {
+      "id": "CHK_03_DEMISTER_DP_DRAIN",
+      "name": "Check Demister Differential Pressure Gauge & Drain Lines",
+      "target_equipment": "V-101",
+      "type": "Instrumentation & Visual",
+      "instructions": "Confirm local differential pressure impulse lines are not liquid-filled; inspect scrubber sight glass for rapid liquid accumulation."
+    },
+    {
+      "id": "CHK_04_THIEF_SAMPLE_EMULSION",
+      "name": "Take Manual Thief Sample from V-101 Interface Try-Cocks",
+      "target_equipment": "V-101",
+      "type": "Sampling / Laboratory",
+      "instructions": "Draw sample from middle test cock (sample point SP-102) to verify physical height of emulsion rag layer versus transmitter reading."
+    },
+    {
+      "id": "CHK_05_ASV_RECYCLE_VALVE",
+      "name": "Inspect Anti-Surge Recycle Valve ASV-101 Fast-Stroke Actuator",
+      "target_equipment": "K-101",
+      "type": "Mechanical / Control Check",
+      "instructions": "Verify ASV-101 positioner response; confirm solenoid trip valve is energized and bypass line is hot to touch."
+    },
+    {
+      "id": "CHK_06_SCRUBBER_BOOT_DRAIN",
+      "name": "Inspect V-102 Suction Scrubber Boot Auto-Drain Valve",
+      "target_equipment": "V-102",
+      "type": "Process Check",
+      "instructions": "Check that scrubber drain valve LCV-103 is cycling to prevent liquid entry into compressor suction."
+    },
+    {
+      "id": "CHK_07_COMPRESSOR_SUCTION_FILTER",
+      "name": "Inspect Compressor Suction Strainer Differential Pressure",
+      "target_equipment": "K-101",
+      "type": "Mechanical Check",
+      "instructions": "Verify suction strainer DP is below 0.35 bar to rule out upstream particulate debris flow blockage."
+    }
+  ],
+  "actions": [
+    {
+      "id": "ACT_01_SWITCH_MANUAL_BYPASS",
+      "name": "Switch PCV-101 to Manual Station / Crack Open Manual Bypass Valve",
+      "target_equipment": "PCV-101",
+      "preconditions": ["Permit to Work obtained", "Operator stationed locally at bypass valve"],
+      "risk_level": "Medium"
+    },
+    {
+      "id": "ACT_02_INJECT_ANTIFOAM_CHEMICAL",
+      "name": "Start Antifoam Chemical Injection Pump P-105 at 45 ppm",
+      "target_equipment": "V-101",
+      "preconditions": ["Chemical tank level > 20%", "Injection quill valve open"],
+      "risk_level": "Low"
+    },
+    {
+      "id": "ACT_03_OPEN_ANTISURGE_RECYCLE",
+      "name": "Trigger Manual Fast-Opening of Anti-Surge Valve ASV-101",
+      "target_equipment": "K-101",
+      "preconditions": ["Inter-stage cooler E-101 online"],
+      "risk_level": "Medium"
+    },
+    {
+      "id": "ACT_04_FLUSH_INTERFACE_BRIDLE",
+      "name": "Isolate and Flush LT-102 External Level Bridle with Hot Condensate",
+      "target_equipment": "LT-102",
+      "preconditions": ["Bridle isolation valves accessible", "Drain to closed drain header"],
+      "risk_level": "Low"
+    },
+    {
+      "id": "ACT_05_PINCH_WELLHEAD_CHOKE",
+      "name": "Pinch Upstream Production Wellhead Chokes by 15%",
+      "target_equipment": "Wellhead_Choke",
+      "preconditions": ["Communication established with field/platform team"],
+      "risk_level": "Medium"
+    },
+    {
+      "id": "ACT_06_DIVERT_TO_FLARE",
+      "name": "Crack Open High-Pressure Relief Flare Valve BDV-101",
+      "target_equipment": "V-101",
+      "preconditions": ["Flare header lit and purged with fuel gas", "Pressure > 35 barg"],
+      "risk_level": "High"
+    }
+  ],
+  "documents": [
+    {
+      "id": "SOP-V101-SEC2",
+      "title": "Standard Operating Procedure: Separator V-101 Pressure Management & Overpressure",
+      "section": "Section 2: High Pressure Handling & Relief Interlocks",
+      "summary": "Mandates that when PT-101 exceeds 34 barg, operator must cross-check PCV-101 stem travel before cracking manual bypass or venting to HP flare header."
+    },
+    {
+      "id": "SOP-V101-SEC4",
+      "title": "Standard Operating Procedure: Separator Foaming Mitigation & Demister Cleaning",
+      "section": "Section 4: Antifoam Dosing & Scrubber Flooding Prevention",
+      "summary": "Prescribes starting antifoam pump P-105 immediately when DP-101 exceeds 0.40 bar, and draining V-102 suction scrubber to avoid compressor liquid ingestion."
+    },
+    {
+      "id": "SOP-K101-SEC1",
+      "title": "Standard Operating Procedure: Centrifugal Compressor K-101 Anti-Surge Control",
+      "section": "Section 1: Surge Recovery & Vibration Trip Prevention",
+      "summary": "Mandates that if shaft vibration ST-101 rises above 4.5 mm/s or surge margin drops below 10%, anti-surge recycle valve ASV-101 must be immediately modulated open."
+    },
+    {
+      "id": "SOP-V101-SEC5",
+      "title": "Standard Operating Procedure: Oil-Water Interface Level Transmitter Maintenance",
+      "section": "Section 5: Bridle Flushing & Emulsion Pad Clearing",
+      "summary": "Requires periodic manual thief sampling to verify rag layer depth when LT-102 disagrees with oil export water-cut analyzer readings."
+    },
+    {
+      "id": "SOP-WELL-SEC2",
+      "title": "Standard Operating Procedure: Pipeline Liquid Slug Reception & Choke Throttling",
+      "section": "Section 2: Slug Catching and Choke Manifold Throttling",
+      "summary": "Instructs control room operator to throttle manifold choke valves upon early acoustic detection of incoming liquid slugs."
+    },
+    {
+      "id": "HAZOP-V101-NOD01",
+      "title": "HAZOP Study Node 1: High Pressure Separator V-101",
+      "section": "Deviation: More Pressure / Liquid Carryover",
+      "summary": "Identifies PCV-101 failure and demister plugging as major causes for vessel overpressurization and downstream scrubber carryover."
+    },
+    {
+      "id": "HAZOP-K101-NOD02",
+      "title": "HAZOP Study Node 2: Stage 1 Gas Compressor K-101",
+      "section": "Deviation: Less Flow / High Vibration",
+      "summary": "Identifies compressor surge as high-consequence failure mode leading to seal rupture, impeller clash, and catastrophic shutdown."
+    }
+  ]
+}

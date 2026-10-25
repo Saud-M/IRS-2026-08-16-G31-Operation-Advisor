@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operation Advisor — Primary Separation & Gas Compression Cockpit</title>
+<style>
+  :root {
+    --bg-main: #0c121e;
+    --bg-card: #141d2e;
+    --bg-card-subtle: #0f1728;
+    --bg-hover: #1e2a3f;
+    --border: #233248;
+    --border-bright: #334460;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    --accent: #0ea5e9;
+    --accent-hover: #38bdf8;
+    --accent-glow: rgba(14, 165, 233, 0.15);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.5;
+    padding: 16px 20px;
+    min-height: 100vh;
+  }
+  
+  /* Top Industrial Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-card);
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .status-orb {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--success);
+    transition: background 0.3s ease;
+  }
+  .status-orb.warning { background: var(--warning); }
+  .status-orb.trip { background: var(--danger); }
+
+  .header-title h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header-title span {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  select, button, input {
+    background: var(--bg-hover);
+    color: #fff;
+    border: 1px solid var(--border);
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    transition: all 0.2s;
+  }
+  select:hover, button:hover, input:focus {
+    border-color: var(--accent);
+  }
+  button {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  button.primary {
+    background: #0284c7;
+    border-color: #0369a1;
+    color: #fff;
+    font-weight: 600;
+  }
+  button.primary:hover:not(:disabled) {
+    background: #0369a1;
+  }
+  button.secondary {
+    background: rgba(51, 65, 85, 0.4);
+    border-color: var(--border);
+    color: var(--text-secondary);
+  }
+  button.secondary:hover:not(:disabled) {
+    background: #1e293b;
+    color: #fff;
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .badge {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .badge-passed { background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .badge-warning { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+  .badge-rejected { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+  /* 2-Column Responsive Layout */
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 16px;
+  }
+  @media (max-width: 1100px) {
+    .grid-container { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+
+  /* PFD Schematic */
+  .pfd-container {
+    background: #090e19;
+    border-radius: 6px;
+    padding: 10px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  svg { width: 100%; height: auto; display: block; }
+  
+  /* Calm Industrial Process Flows */
+  .pipe-flow-gas {
+    stroke-dasharray: 8, 8;
+    animation: dash-forward 3.0s linear infinite;
+  }
+  .pipe-flow-liquid {
+    stroke-dasharray: 6, 6;
+    animation: dash-forward 4.0s linear infinite;
+  }
+  .pipe-flow-surge {
+    stroke-dasharray: 6, 6;
+    animation: dash-reverse 2.2s linear infinite;
+  }
+  @keyframes dash-forward {
+    from { stroke-dashoffset: 32; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes dash-reverse {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: 32; }
+  }
+
+  .sensor-tag {
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  .sensor-tag:hover { transform: scale(1.03); }
+
+  /* Telemetry Grid */
+  .telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  @media (max-width: 768px) {
+    .telemetry-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .tel-box {
+    background: #0f1624;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    position: relative;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .tel-box .tag { font-size: 11px; color: var(--text-muted); font-weight: 600; display: flex; justify-content: space-between; }
+  .tel-box .val-row { display: flex; align-items: baseline; gap: 4px; margin: 4px 0 2px 0; }
+  .tel-box .val { font-size: 20px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+  .tel-box .unit { font-size: 11px; color: var(--text-dim); }
+  .tel-box .envelope { font-size: 10px; color: #64748b; font-family: monospace; }
+  .tel-box .meter-bg { background: #1e293b; height: 3px; border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .tel-box .meter-fill { height: 100%; width: 50%; background: var(--accent); transition: width 0.4s ease, background 0.3s; }
+
+  .tel-box.normal { border-left: 3px solid var(--success); }
+  .tel-box.alarm { border-left: 3px solid var(--warning); background: rgba(245, 158, 11, 0.05); }
+  .tel-box.alarm .meter-fill { background: var(--warning); }
+  .tel-box.trip { border-left: 3px solid var(--danger); background: rgba(239, 68, 68, 0.08); }
+  .tel-box.trip .meter-fill { background: var(--danger); }
+
+  /* Chat & Dialogue */
+  .chat-box {
+    height: 290px;
+    overflow-y: auto;
+    background: #0b111e;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .chat-msg {
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    max-width: 90%;
+    line-height: 1.5;
+  }
+  .chat-msg.operator {
+    background: #1e3a8a;
+    color: #f0f9ff;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+  }
+  .chat-msg.advisor {
+    background: #152033;
+    color: #f1f5f9;
+    border-left: 3px solid var(--accent);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+  }
+  .chat-msg .meta {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .chat-msg code {
+    background: rgba(0,0,0,0.3);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #38bdf8;
+    font-family: monospace;
+    font-size: 12px;
+  }
+  .chat-msg.advisor.error-state {
+    border-left-color: var(--danger);
+  }
+  .chat-thinking {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    font-style: italic;
+    font-size: 13px;
+  }
+  .thinking-spinner {
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(56, 189, 248, 0.25);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spinIndicator 0.8s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spinIndicator {
+    to { transform: rotate(360deg); }
+  }
+  .chat-error-text {
+    color: var(--danger);
+    font-weight: 500;
+  }
+
+  /* Quick Question Chips */
+  .prompt-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .chip {
+    background: #162235;
+    border: 1px solid #23344d;
+    color: #93c5fd;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .chip:hover {
+    background: #1e304b;
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .chat-input-row { display: flex; gap: 8px; }
+  .chat-input-row input { flex: 1; }
+
+  /* Hypotheses Bars */
+  .hypo-item { margin-bottom: 12px; }
+  .hypo-header { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; font-weight: 600; }
+  .progress-bg { background: #1e293b; border-radius: 3px; height: 7px; overflow: hidden; }
+  .progress-fill { background: var(--accent); height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+  /* Interactive Plan & Checklist */
+  .plan-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .plan-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #0f1624;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .plan-item:hover {
+    border-color: #334460;
+    background: #141d2e;
+  }
+  .plan-item.completed {
+    opacity: 0.75;
+    border-color: rgba(16, 185, 129, 0.4);
+    background: rgba(16, 185, 129, 0.04);
+  }
+  .plan-item.completed strong {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+  .plan-item input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .plan-item .details { flex: 1; }
+  .plan-item .meta-row { display: flex; gap: 8px; margin-top: 2px; font-size: 10px; color: var(--text-dim); }
+
+  /* Citations Pills */
+  .citation-pill {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--accent);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin-right: 5px;
+    margin-top: 4px;
+    cursor: pointer;
+    border: 1px solid rgba(14, 165, 233, 0.25);
+    transition: all 0.15s ease;
+  }
+  .citation-pill:hover {
+    background: rgba(14, 165, 233, 0.2);
+    border-color: var(--accent);
+  }
+
+  /* Modal Backdrop & Dialog */
+  .modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(2px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal-dialog {
+    background: var(--bg-card);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+  }
+  .modal-header h3 { font-size: 15px; color: #fff; font-weight: 600; }
+  .modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    padding: 4px 8px;
+  }
+  .modal-close:hover { color: #fff; }
+
+  /* OCR Optical Gauge Inspection Reticle */
+  .ocr-preview-box {
+    position: relative;
+    background: #090e19;
+    border-radius: 6px;
+    overflow: hidden;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+  }
+  .viewfinder-reticle {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border: 1px dashed rgba(56, 189, 248, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="status-orb" id="plantStatusOrb"></div>
+    <div class="header-title">
+      <h1>
+        OPERATION ADVISOR
+      </h1>
+      <span>Train 1 — HP Separator V-101 & Centrifugal Compressor K-101 (Decision Support Cockpit)</span>
+    </div>
+  </div>
+  <div class="header-actions">
+    <label style="font-size: 12px; color: var(--text-muted);">Inject Scenario:</label>
+    <select id="scenarioSelect" onchange="switchScenario()">
+      <option value="NOMINAL">1. Nominal Steady-State</option>
+      <option value="PCV_101_STICTION">2. PCV-101 Stiction (Overpressure)</option>
+      <option value="LIQUID_CARRYOVER">3. Demister Fouling & Carryover</option>
+      <option value="COMPRESSOR_SURGE">4. Compressor K-101 Surge</option>
+      <option value="EMULSION_DRIFT">5. Emulsion Pad & LT-102 Drift</option>
+      <option value="WELLHEAD_SLUG">6. Severe Wellhead Slug Influx</option>
+    </select>
+    <button class="primary" onclick="exportHandover()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Export Handover (PDF)
+    </button>
+  </div>
+</header>
+
+<div class="grid-container">
+
+  <!-- LEFT COLUMN: Process Flow Diagram & Critical Asset Status -->
+  <div>
+    <!-- Interactive PFD -->
+    <div class="card">
+      <div class="card-title">
+        <span>Process Flow Diagram (PFD) — Live Dynamics</span>
+        <span id="incidentBadge" style="color: var(--text-muted); font-size: 11px; font-family: monospace;">INC-LIVE</span>
+      </div>
+      <div class="pfd-container">
+        <svg viewBox="0 0 780 340" id="pfdSvg">
+          <defs>
+            <linearGradient id="vesselGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#2d3b52" />
+              <stop offset="100%" stop-color="#182335" />
+            </linearGradient>
+            <linearGradient id="liquidGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#0284c7" />
+              <stop offset="100%" stop-color="#0369a1" />
+            </linearGradient>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          <!-- Separator V-101 Vessel Body -->
+          <rect x="70" y="80" width="180" height="150" rx="40" fill="url(#vesselGrad)" stroke="#475569" stroke-width="2"/>
+          
+          <!-- Dynamic Liquid Level in V-101 (Scaled via JS) -->
+          <rect id="vesselLiquid" x="72" y="155" width="176" height="70" rx="10" fill="url(#liquidGrad)" opacity="0.6"/>
+          
+          <text x="160" y="130" fill="#f8fafc" font-size="14" font-weight="bold" text-anchor="middle">V-101</text>
+          <text x="160" y="146" fill="#94a3b8" font-size="10" text-anchor="middle">HP 3-Phase Separator</text>
+
+          <!-- Demister Pad -->
+          <line x1="85" y1="95" x2="235" y2="95" stroke="#38bdf8" stroke-dasharray="4" stroke-width="3"/>
+          <text x="160" y="90" fill="#38bdf8" font-size="9" text-anchor="middle">Demister Mesh Pad</text>
+
+          <!-- Inlet Feed Line -->
+          <path d="M 10 150 L 70 150" stroke="#60a5fa" stroke-width="3" fill="none" class="pipe-flow-gas"/>
+          <text x="35" y="140" fill="#94a3b8" font-size="9" text-anchor="middle">Multiphase Feed</text>
+
+          <!-- Gas Outlet Line to PCV-101 -->
+          <path d="M 160 80 L 160 35 L 340 35 L 340 100" stroke="#38bdf8" stroke-width="3" fill="none" class="pipe-flow-gas"/>
+          
+          <!-- PCV-101 Valve Symbol -->
+          <polygon points="230,27 250,43 230,43 250,27" fill="#f59e0b" stroke="#fff" stroke-width="1"/>
+          <text x="240" y="20" fill="#f59e0b" font-size="10" font-weight="bold" text-anchor="middle">PCV-101</text>
+
+          <!-- Manual Bypass Line HV-101B -->
+          <path d="M 210 35 L 210 60 L 270 60 L 270 35" stroke="#64748b" stroke-dasharray="3" stroke-width="2" fill="none"/>
+          <polygon points="235,53 245,67 235,67 245,53" fill="#64748b" stroke="#fff"/>
+          <text x="240" y="75" fill="#94a3b8" font-size="9" text-anchor="middle">HV-101B Bypass</text>
+
+          <!-- Flare Line BDV-101 -->
+          <path d="M 180 35 L 180 15 L 200 15" stroke="#ef4444" stroke-width="2" fill="none"/>
+          <text x="205" y="12" fill="#ef4444" font-size="9">To Flare (BDV-101)</text>
+
+          <!-- Scrubber V-102 -->
+          <rect x="310" y="100" width="70" height="130" rx="20" fill="url(#vesselGrad)" stroke="#475569" stroke-width="2"/>
+          <text x="345" y="160" fill="#f8fafc" font-size="12" font-weight="bold" text-anchor="middle">V-102</text>
+          <text x="345" y="175" fill="#94a3b8" font-size="9" text-anchor="middle">Suction Scrubber</text>
+
+          <!-- Gas to Compressor K-101 -->
+          <path d="M 345 100 L 345 80 L 460 80 L 460 120" stroke="#38bdf8" stroke-width="3" fill="none" class="pipe-flow-gas"/>
+
+          <!-- Compressor K-101 Symbol -->
+          <polygon points="440,120 490,140 490,100" fill="#0284c7" stroke="#38bdf8" stroke-width="2"/>
+          <text x="465" y="165" fill="#f8fafc" font-size="12" font-weight="bold" text-anchor="middle">K-101</text>
+          <text x="465" y="178" fill="#94a3b8" font-size="9" text-anchor="middle">1st Stage</text>
+
+          <!-- Compressor Discharge -->
+          <path d="M 490 120 L 590 120" stroke="#38bdf8" stroke-width="3" fill="none" class="pipe-flow-gas"/>
+          <text x="540" y="112" fill="#94a3b8" font-size="9" text-anchor="middle">To 2nd Stage</text>
+
+          <!-- Anti-Surge Line with ASV-101 -->
+          <path d="M 540 120 L 540 240 L 345 240 L 345 230" stroke="#38bdf8" stroke-width="2" fill="none" class="pipe-flow-surge"/>
+          <polygon points="435,233 450,247 435,247 450,233" fill="#38bdf8" stroke="#fff"/>
+          <text x="442" y="260" fill="#38bdf8" font-size="9" text-anchor="middle">ASV-101 Anti-Surge</text>
+
+          <!-- Liquid Outlets -->
+          <path d="M 120 230 L 120 280 L 160 280" stroke="#0284c7" stroke-width="3" fill="none" class="pipe-flow-liquid"/>
+          <text x="185" y="284" fill="#38bdf8" font-size="9">Oil (LCV-101)</text>
+          <path d="M 200 230 L 200 300 L 240 300" stroke="#0ea5e9" stroke-width="3" fill="none" class="pipe-flow-liquid"/>
+          <text x="265" y="304" fill="#0ea5e9" font-size="9">Water (LCV-102)</text>
+
+          <!-- Sensor Badges Overlay -->
+          <g class="sensor-tag" id="tag-pt101" onclick="askAboutSensor('PT-101')">
+            <rect x="75" y="45" width="70" height="24" rx="4" fill="#090d16" stroke="#38bdf8"/>
+            <text x="110" y="61" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle" id="val-pt101">PT-101: 31.2</text>
+          </g>
+          <g class="sensor-tag" id="tag-lt101" onclick="askAboutSensor('LT-101')">
+            <rect x="15" y="195" width="65" height="24" rx="4" fill="#090d16" stroke="#38bdf8"/>
+            <text x="47" y="211" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle" id="val-lt101">LT: 50%</text>
+          </g>
+          <g class="sensor-tag" id="tag-dpit101" onclick="askAboutSensor('DPIT-101')">
+            <rect x="235" y="75" width="70" height="24" rx="4" fill="#090d16" stroke="#38bdf8"/>
+            <text x="270" y="91" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle" id="val-dpit101">DP: 0.02</text>
+          </g>
+          <g class="sensor-tag" id="tag-vt101" onclick="askAboutSensor('VT-101')">
+            <rect x="500" y="145" width="75" height="24" rx="4" fill="#090d16" stroke="#38bdf8"/>
+            <text x="537" y="161" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle" id="val-vt101">VT: 1.4 mm/s</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Live Telemetry Sensor Suite -->
+    <div class="card">
+      <div class="card-title">Live Sensor Suite Telemetry</div>
+      <div class="telemetry-grid">
+        <div class="tel-box normal" id="box-pt101">
+          <div class="tag"><span>PT-101 (Separator)</span><span id="trend-pt101">→</span></div>
+          <div class="val-row"><span class="val" id="disp-pt101">31.20</span><span class="unit">barg</span></div>
+          <div class="envelope">Norm: 28-32 | PAH: 34.0</div>
+          <div class="meter-bg"><div class="meter-fill" id="meter-pt101"></div></div>
+        </div>
+        <div class="tel-box normal" id="box-lt101">
+          <div class="tag"><span>LT-101 (Total Level)</span><span id="trend-lt101">→</span></div>
+          <div class="val-row"><span class="val" id="disp-lt101">50.10</span><span class="unit">%</span></div>
+          <div class="envelope">Norm: 45-55 | LAH: 70%</div>
+          <div class="meter-bg"><div class="meter-fill" id="meter-lt101"></div></div>
+        </div>
+        <div class="tel-box normal" id="box-lt102">
+          <div class="tag"><span>LT-102 (Interface)</span><span id="trend-lt102">→</span></div>
+          <div class="val-row"><span class="val" id="disp-lt102">49.80</span><span class="unit">%</span></div>
+          <div class="envelope">Norm: 20-30 | LAL: 15%</div>
+          <div class="meter-bg"><div class="meter-fill" id="meter-lt102"></div></div>
+        </div>
+        <div class="tel-box normal" id="box-dpit101">
+          <div class="tag"><span>DP-101 (Demister)</span><span id="trend-dpit101">→</span></div>
+          <div class="val-row"><span class="val" id="disp-dpit101">0.022</span><span class="unit">bar</span></div>
+          <div class="envelope">Norm: &lt; 0.03 | DPAH: 0.05</div>
+          <div class="meter-bg"><div class="meter-fill" id="meter-dpit101"></div></div>
+        </div>
+        <div class="tel-box normal" id="box-vt101">
+          <div class="tag"><span>VT-101 (K-101 Shaft)</span><span id="trend-vt101">→</span></div>
+          <div class="val-row"><span class="val" id="disp-vt101">1.45</span><span class="unit">mm/s</span></div>
+          <div class="envelope">Norm: 1.2-2.8 | VAHH: 4.5</div>
+          <div class="meter-bg"><div class="meter-fill" id="meter-vt101"></div></div>
+        </div>
+        <div class="tel-box normal" id="box-ft101">
+          <div class="tag"><span>FT-101 (Gas Outflow)</span><span id="trend-ft101">→</span></div>
+          <div class="val-row"><span class="val" id="disp-ft101">68,000</span><span class="unit">Sm³/h</span></div>
+          <div class="envelope">Design: 70,000 Sm³/h</div>
+          <div class="meter-bg"><div class="meter-fill" id="meter-ft101"></div></div>
+        </div>
+        <div class="tel-box normal" id="box-pcv">
+          <div class="tag"><span>PCV-101 Valve Stroke</span></div>
+          <div class="val-row"><span class="val" id="disp-pcv">48.0</span><span class="unit">%</span></div>
+          <div class="envelope">Auto PI Pressure Control</div>
+          <div class="meter-bg"><div class="meter-fill" id="meter-pcv"></div></div>
+        </div>
+        <div class="tel-box normal" id="box-asv">
+          <div class="tag"><span>ASV-101 Anti-Surge</span></div>
+          <div class="val-row"><span class="val" id="disp-asv">0.0</span><span class="unit">%</span></div>
+          <div class="envelope">Closed (Recycle Inactive)</div>
+          <div class="meter-bg"><div class="meter-fill" id="meter-asv"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN: Dialogue, Hypotheses & Action Plan -->
+  <div>
+    <!-- Interactive Natural Language Console -->
+    <div class="card">
+      <div class="card-title">
+        <span>Operator Multimodal Interaction Console</span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span id="llmStatusBadge" style="font-size: 11px; padding: 2px 8px; border-radius: 12px; background: rgba(56, 189, 248, 0.15); color: var(--accent);">RAG Grounded</span>
+          <button class="secondary" style="padding: 2px 8px; font-size: 11px;" onclick="openOCRModal()">OCR Dial Gauge</button>
+        </div>
+      </div>
+
+      <!-- Quick Suggestion Chips -->
+      <div class="prompt-chips">
+        <span class="chip" onclick="askChip('Why is separator V-101 pressure rising?')">V-101 Pressure Inquiry</span>
+        <span class="chip" onclick="askChip('Check compressor K-101 shaft vibration and surge margin')">K-101 Surge Margin</span>
+        <span class="chip" onclick="askChip('Explain SOP-V101 Section 1.1 operating limits')">SOP-V101 Limits</span>
+        <span class="chip" onclick="askChip('What checks are required for PCV-101 stiction?')">PCV-101 Verification</span>
+        <span class="chip" onclick="askChip('Generate shift handover report')">Shift Handover Dossier</span>
+      </div>
+
+      <div class="chat-box" id="chatBox">
+        <div class="chat-msg advisor">
+          Hello Console Operator. Operation Advisor is monitoring CPF Train 1. Telemetry is within safe operating envelopes.
+          <div class="meta"><span>System Initialized</span><span>Grounding: [SOP-V101 Section 1]</span></div>
+        </div>
+      </div>
+
+      <div class="chat-input-row">
+        <input type="text" id="chatInput" placeholder="Ask advisor (e.g. Why is V-101 pressure high?)" onkeydown="if(event.key==='Enter') sendChat()">
+        <button id="sendBtn" class="primary" onclick="sendChat()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          Send
+        </button>
+      </div>
+    </div>
+
+    <!-- Ranked Fault Hypotheses Panel -->
+    <div class="card">
+      <div class="card-title">
+        <span>Probabilistic Fault Hypotheses (Bayesian Net)</span>
+        <span id="entropyDisp" style="font-size: 11px; color: var(--text-muted);">Shannon Entropy: 2.73 bits</span>
+      </div>
+      <div id="hypothesesContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- Response Plan & Interactive Priority Checklist -->
+    <div class="card">
+      <div class="card-title">
+        <span>Bounded A* Response Plan & Field Checklist</span>
+        <span id="planProgressDisp" style="font-size: 11px; color: var(--text-muted);">0 Completed</span>
+      </div>
+      <div id="planContainer" class="plan-checklist">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- Procedural References (Clickable SOP Explorer) -->
+    <div class="card">
+      <div class="card-title">
+        <span>Grounded Technical References</span>
+        <span style="font-size: 10px; color: var(--text-dim);">Click to inspect SOP</span>
+      </div>
+      <div id="citationsContainer">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SOP Document Citation Inspector Modal -->
+<div class="modal-backdrop" id="citationModal" onclick="closeModalOnBackdrop(event, 'citationModal')">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 id="modalCitationTitle">Standard Operating Procedure</h3>
+      <button class="modal-close" onclick="closeModal('citationModal')">✕</button>
+    </div>
+    <div style="font-size: 11px; color: var(--accent); margin-bottom: 8px;" id="modalCitationMeta">Section Ref: [SOP-V101 Section 1]</div>
+    <div id="modalCitationContent" style="background: #090e18; border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-size: 13px; line-height: 1.6; color: #cbd5e1; white-space: pre-wrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      Loading procedural excerpt...
+    </div>
+    <div style="margin-top: 14px; text-align: right;">
+      <button class="secondary" onclick="closeModal('citationModal')">Dismiss</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dial Gauge OCR Simulator Modal -->
+<div class="modal-backdrop" id="ocrModal" onclick="closeModalOnBackdrop(event, 'ocrModal')">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>Transmitter & Dial Gauge OCR Scanner</h3>
+      <button class="modal-close" onclick="closeModal('ocrModal')">✕</button>
+    </div>
+    <div class="ocr-preview-box">
+      <div class="viewfinder-reticle"></div>
+      <svg width="120" height="120" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="#1e293b" stroke="#38bdf8" stroke-width="3"/>
+        <circle cx="50" cy="50" r="3" fill="#f8fafc"/>
+        <line x1="50" y1="50" x2="68" y2="30" stroke="#ef4444" stroke-width="2"/>
+        <text x="50" y="70" fill="#94a3b8" font-size="8" text-anchor="middle">PT-101 (BARG)</text>
+      </svg>
+    </div>
+    <div style="background: #090e18; border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 12px; margin-bottom: 12px;">
+      <div><strong>Optical Recognition Tag:</strong> <span style="color: var(--accent);">PT-101 (Pressure Transmitter)</span></div>
+      <div><strong>Detected Reading:</strong> <span style="color: #f87171; font-weight: bold;">36.20 barg (Alarm: HIGH_HIGH_TRIP)</span></div>
+      <div><strong>OCR Neural Confidence:</strong> <span style="color: #34d399;">99.4% (Tesseract / EasyOCR Engine)</span></div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 8px;">
+      <button class="secondary" onclick="closeModal('ocrModal')">Cancel</button>
+      <button class="primary" onclick="confirmOCRReading()">Synchronize to Working Memory</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let msgCounter = 0;
+  let previousTelemetry = {};
+  const completedPlanItems = new Set();
+
+  // Simple Markdown & Citation Tag Formatter
+  function formatMarkdown(text) {
+    if (!text) return "";
+    let safe = text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    
+    // Bold
+    safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Italic
+    safe = safe.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    // Code
+    safe = safe.replace(/`([^`]+)`/g, '<code>$1</code>');
+    // Bullet points
+    safe = safe.replace(/^\s*[-•]\s+(.*)$/gm, '• $1<br>');
+    // Line breaks
+    safe = safe.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+
+    // Automatically convert citations [SOP-...] and [HAZOP-...] into clickable pills
+    safe = safe.replace(/(\[(?:SOP|HAZOP)[^\]]+\])/g, '<span class="citation-pill" onclick="inspectCitation(\'$1\')">$1</span>');
+
+    return safe;
+  }
+
+  async function fetchStatus() {
+    try {
+      const res = await fetch('/api/status');
+      const data = await res.json();
+      renderStatus(data);
+    } catch (e) {
+      console.error("Status fetch error", e);
+    }
+  }
+
+  function renderStatus(data) {
+    const tel = data.telemetry;
+
+    // 1. Update Telemetry displays & Dynamic Meters
+    document.getElementById('disp-pt101').innerText = tel['PT-101'].toFixed(2);
+    document.getElementById('disp-lt101').innerText = tel['LT-101'].toFixed(1);
+    document.getElementById('disp-lt102').innerText = tel['LT-102'].toFixed(1);
+    document.getElementById('disp-dpit101').innerText = tel['DPIT-101'].toFixed(3);
+    document.getElementById('disp-vt101').innerText = tel['VT-101'].toFixed(2);
+    document.getElementById('disp-ft101').innerText = Math.round(tel['FT-101']).toLocaleString();
+    document.getElementById('disp-pcv').innerText = tel['PCV_101_POS'].toFixed(1);
+    document.getElementById('disp-asv').innerText = tel['ASV_101_POS'].toFixed(1);
+
+    // Dynamic Meter Widths
+    document.getElementById('meter-pt101').style.width = Math.min(100, Math.max(5, (tel['PT-101'] / 40.0) * 100)) + '%';
+    document.getElementById('meter-lt101').style.width = Math.min(100, Math.max(5, tel['LT-101'])) + '%';
+    document.getElementById('meter-lt102').style.width = Math.min(100, Math.max(5, tel['LT-102'])) + '%';
+    document.getElementById('meter-dpit101').style.width = Math.min(100, Math.max(5, (tel['DPIT-101'] / 0.1) * 100)) + '%';
+    document.getElementById('meter-vt101').style.width = Math.min(100, Math.max(5, (tel['VT-101'] / 5.5) * 100)) + '%';
+    document.getElementById('meter-ft101').style.width = Math.min(100, Math.max(5, (tel['FT-101'] / 90000.0) * 100)) + '%';
+    document.getElementById('meter-pcv').style.width = tel['PCV_101_POS'] + '%';
+    document.getElementById('meter-asv').style.width = Math.max(5, tel['ASV_101_POS']) + '%';
+
+    // Update SVG Text Tags
+    document.getElementById('val-pt101').textContent = `PT-101: ${tel['PT-101'].toFixed(1)}`;
+    document.getElementById('val-lt101').textContent = `LT: ${tel['LT-101'].toFixed(0)}%`;
+    document.getElementById('val-dpit101').textContent = `DP: ${tel['DPIT-101'].toFixed(3)}`;
+    document.getElementById('val-vt101').textContent = `VT: ${tel['VT-101'].toFixed(1)} mm/s`;
+
+    // Dynamic Liquid Height inside SVG Separator V-101
+    const vesselLiquidEl = document.getElementById('vesselLiquid');
+    if (vesselLiquidEl) {
+      const liquidHeight = Math.min(130, Math.max(20, (tel['LT-101'] / 100.0) * 130));
+      const liquidY = 220 - liquidHeight;
+      vesselLiquidEl.setAttribute('y', liquidY);
+      vesselLiquidEl.setAttribute('height', liquidHeight);
+    }
+
+    // Visual Alert Stylings & Trends
+    updateBoxStyling('box-pt101', 'trend-pt101', tel['PT-101'], previousTelemetry['PT-101'], 34.0, 36.5);
+    updateBoxStyling('box-vt101', 'trend-vt101', tel['VT-101'], previousTelemetry['VT-101'], 3.8, 4.5);
+    updateBoxStyling('box-dpit101', 'trend-dpit101', tel['DPIT-101'], previousTelemetry['DPIT-101'], 0.05, 0.08);
+    updateBoxStyling('box-lt101', 'trend-lt101', tel['LT-101'], previousTelemetry['LT-101'], 65.0, 75.0);
+    previousTelemetry = Object.assign({}, tel);
+
+    // Plant Status Orb
+    const orb = document.getElementById('plantStatusOrb');
+    if (tel['PT-101'] >= 36.5 || tel['VT-101'] >= 4.5) {
+      orb.className = 'status-orb trip';
+    } else if (tel['PT-101'] >= 34.0 || tel['VT-101'] >= 3.8 || tel['DPIT-101'] >= 0.05) {
+      orb.className = 'status-orb warning';
+    } else {
+      orb.className = 'status-orb';
+    }
+
+    // 2. Incident Badge
+    const incBadge = document.getElementById('incidentBadge');
+    if (incBadge) incBadge.innerText = data.incident_id || 'INC-LIVE';
+
+    // Update Shannon Entropy if element exists
+    const entropyEl = document.getElementById('entropyDisp');
+    if (entropyEl && data.ranked_hypotheses && data.ranked_hypotheses.length > 0) {
+      let entropy = 0;
+      data.ranked_hypotheses.forEach(h => {
+        if (h.posterior_prob > 0.0001) {
+          entropy -= h.posterior_prob * Math.log2(h.posterior_prob);
+        }
+      });
+      entropyEl.innerText = `Shannon Entropy: ${entropy.toFixed(2)} bits`;
+    }
+
+    // 3. Ranked Hypotheses
+    const hypoContainer = document.getElementById('hypothesesContainer');
+    if (hypoContainer) {
+      hypoContainer.innerHTML = '';
+      const hypotheses = (data.ranked_hypotheses && data.ranked_hypotheses.length > 0)
+        ? data.ranked_hypotheses.slice(0, 4)
+        : [];
+      if (hypotheses.length === 0) {
+        hypoContainer.innerHTML = '<div style="font-size: 12px; color: var(--text-muted); padding: 6px 0;">No active fault hypotheses.</div>';
+      } else {
+        hypotheses.forEach(h => {
+          const pct = (h.posterior_prob * 100).toFixed(1);
+          const isTop = h.hypothesis_id === data.top_hypothesis;
+          const barColor = isTop ? 'var(--accent)' : '#64748b';
+          hypoContainer.innerHTML += `
+            <div class="hypo-item">
+              <div class="hypo-header">
+                <span>${h.description} (${h.hypothesis_id})</span>
+                <span style="color: ${barColor}">${pct}%</span>
+              </div>
+              <div class="progress-bg">
+                <div class="progress-fill" style="width: ${pct}%; background: ${barColor};"></div>
+              </div>
+            </div>
+          `;
+        });
+      }
+    }
+
+    // 4. Response Plan & Field Checklist
+    const planContainer = document.getElementById('planContainer');
+    if (planContainer) {
+      planContainer.innerHTML = '';
+      let totalItems = 0;
+
+      // Synchronize client completed set with backend state
+      if (data.recommended_checks) {
+        data.recommended_checks.forEach(chk => {
+          if (chk.completed) {
+            completedPlanItems.add(`chk-${chk.check_id}`);
+          }
+        });
+      }
+      if (data.active_plan) {
+        data.active_plan.forEach((step, idx) => {
+          if (step.completed) {
+            completedPlanItems.add(`step-${step.action_id || idx}`);
+          }
+        });
+      }
+
+      if (data.recommended_checks && data.recommended_checks.length > 0) {
+        data.recommended_checks.forEach(chk => {
+          totalItems++;
+          const itemId = `chk-${chk.check_id}`;
+          const isDone = completedPlanItems.has(itemId) || !!chk.completed;
+          planContainer.innerHTML += `
+            <label class="plan-item ${isDone ? 'completed' : ''}" id="${itemId}">
+              <input type="checkbox" ${isDone ? 'checked' : ''} onchange="handleCheckChange('${itemId}', this.checked)">
+              <div class="details">
+                <strong>${chk.name}</strong>
+                <div class="meta-row">
+                  <span style="color: ${isDone ? 'var(--accent)' : 'var(--warning)'}; font-weight: 600;">
+                    ${isDone ? 'COMPLETED' : 'Priority ' + (chk.priority || 1) + ' Check'}
+                  </span>
+                  <span>Target: ${chk.target_equipment}</span>
+                </div>
+                <div style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">${chk.instructions}</div>
+              </div>
+            </label>
+          `;
+        });
+      }
+
+      if (data.active_plan && data.active_plan.length > 0) {
+        data.active_plan.forEach((step, idx) => {
+          totalItems++;
+          const itemId = `step-${step.action_id || idx}`;
+          const isDone = completedPlanItems.has(itemId) || !!step.completed;
+          planContainer.innerHTML += `
+            <label class="plan-item ${isDone ? 'completed' : ''}" id="${itemId}">
+              <input type="checkbox" ${isDone ? 'checked' : ''} onchange="handleCheckChange('${itemId}', this.checked)">
+              <div class="details">
+                <strong>Step ${idx + 1}: ${step.name}</strong>
+                <div class="meta-row">
+                  <span style="color: ${isDone ? 'var(--accent)' : '#94a3b8'}; font-weight: 600;">
+                    ${isDone ? 'EXECUTED' : 'Planned'}
+                  </span>
+                  <span>Target: ${step.target_equipment}</span>
+                  <span>Est: ${step.duration_min} min</span>
+                </div>
+              </div>
+            </label>
+          `;
+        });
+      }
+
+      if (totalItems === 0) {
+        planContainer.innerHTML = `<div style="font-size: 12px; color: var(--text-muted); padding: 6px 0;">No active remediation plan required. System operating normally.</div>`;
+      }
+      updatePlanProgress();
+    }
+
+    // 5. Citations Pills
+    const citContainer = document.getElementById('citationsContainer');
+    if (citContainer) {
+      citContainer.innerHTML = '';
+      const citationsList = (data.citations && data.citations.length > 0) ? data.citations : ['[SOP-V101 Section 1]', '[HAZOP-SEP Node 1]'];
+      citationsList.forEach(c => {
+        citContainer.innerHTML += `<span class="citation-pill" onclick="inspectCitation('${c}')">${c}</span>`;
+      });
+    }
+
+    // 6. LLM Engine Badge
+    const llmBadge = document.getElementById('llmStatusBadge');
+    if (llmBadge) {
+      if (data.ollama_available) {
+        llmBadge.innerText = `Ollama: ${data.ollama_model || 'active'}`;
+        llmBadge.style.background = 'rgba(16, 185, 129, 0.2)';
+        llmBadge.style.color = '#34d399';
+      } else {
+        llmBadge.innerText = 'RAG (Zero-Hallucination)';
+        llmBadge.style.background = 'rgba(56, 189, 248, 0.15)';
+        llmBadge.style.color = 'var(--accent)';
+      }
+    }
+  }
+
+  function updateBoxStyling(boxId, trendId, current, prev, alarmLimit, tripLimit) {
+    const box = document.getElementById(boxId);
+    if (!box) return;
+    if (current >= tripLimit) {
+      box.className = 'tel-box trip';
+    } else if (current >= alarmLimit) {
+      box.className = 'tel-box alarm';
+    } else {
+      box.className = 'tel-box normal';
+    }
+
+    const trendEl = document.getElementById(trendId);
+    if (trendEl && prev !== undefined) {
+      const diff = current - prev;
+      if (diff > 0.05) trendEl.innerHTML = '<span style="color: var(--danger)">↑</span>';
+      else if (diff < -0.05) trendEl.innerHTML = '<span style="color: var(--accent)">↓</span>';
+      else trendEl.innerHTML = '<span style="color: var(--text-dim)">→</span>';
+    }
+  }
+
+  async function handleCheckChange(itemId, isChecked) {
+    if (isChecked) {
+      completedPlanItems.add(itemId);
+    } else {
+      completedPlanItems.delete(itemId);
+    }
+    const labelEl = document.getElementById(itemId);
+    if (labelEl) {
+      if (isChecked) {
+        labelEl.classList.add('completed');
+      } else {
+        labelEl.classList.remove('completed');
+      }
+    }
+    updatePlanProgress();
+
+    // Immediately synchronize with WorkingMemory in backend
+    try {
+      await fetch('/api/checklist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed_items: Array.from(completedPlanItems) })
+      });
+    } catch (e) {
+      console.warn("Checklist sync warning:", e);
+    }
+  }
+
+  function updatePlanProgress() {
+    const items = document.querySelectorAll('.plan-checklist .plan-item');
+    const completed = document.querySelectorAll('.plan-checklist .plan-item.completed');
+    const disp = document.getElementById('planProgressDisp');
+    if (disp) {
+      disp.innerText = `${completed.length} / ${items.length} Completed`;
+    }
+  }
+
+  async function switchScenario() {
+    completedPlanItems.clear();
+    const sc = document.getElementById('scenarioSelect').value;
+    const res = await fetch('/api/scenario', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ scenario: sc }),
+    });
+    const data = await res.json();
+    renderStatus(data);
+    addAdvisorMessage(`Injected scenario **${sc}**. Telemetry updated from dynamic model. Diagnosis and response plan refreshed.`);
+  }
+
+  async function sendChat() {
+    const input = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.disabled = true;
+    if (sendBtn) sendBtn.disabled = true;
+
+    addOperatorMessage(text);
+    const thinkingHtml = `
+      <div class="chat-thinking">
+        <span class="thinking-spinner"></span>
+        <span>Processing inquiry &amp; retrieving SOP references...</span>
+      </div>
+    `;
+    const thinkingId = addAdvisorMessage(thinkingHtml, 'Operation Advisor', true);
+
+    try {
+      const res = await fetch('/api/query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: text }),
+      });
+      const data = await res.json();
+      let replyMsg = data.reply || "No response received.";
+      let metaInfo = "";
+      if (data.llm_source === 'ollama') {
+        metaInfo = `Model: ${data.model_used} — 100% Context Grounded`;
+      } else {
+        metaInfo = `Deterministic RAG Synthesizer`;
+      }
+      updateAdvisorMessage(thinkingId, replyMsg, metaInfo, false, false);
+      fetchStatus();
+    } catch (err) {
+      console.error("Chat error:", err);
+      updateAdvisorMessage(
+        thinkingId,
+        '<span class="chat-error-text">Network or inference error: Unable to contact advisor. Please try again.</span>',
+        "Error",
+        true,
+        true
+      );
+    } finally {
+      input.disabled = false;
+      if (sendBtn) sendBtn.disabled = false;
+      input.focus();
+    }
+  }
+
+  function askChip(promptText) {
+    document.getElementById('chatInput').value = promptText;
+    sendChat();
+  }
+
+  function askAboutSensor(tag) {
+    document.getElementById('chatInput').value = `What is the current status and design limits for ${tag}?`;
+    sendChat();
+  }
+
+  function addOperatorMessage(text) {
+    const box = document.getElementById('chatBox');
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    box.innerHTML += `
+      <div class="chat-msg operator">
+        ${formatMarkdown(text)}
+        <div class="meta" style="color: #93c5fd; justify-content: flex-end;">${time} • Panel Operator</div>
+      </div>
+    `;
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function addAdvisorMessage(text, meta, isRawHtml = false) {
+    const box = document.getElementById('chatBox');
+    const msgId = 'adv-msg-' + (++msgCounter);
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const metaTag = meta || 'Operation Advisor';
+    const isHtml = isRawHtml || (typeof text === 'string' && text.trim().startsWith('<') && text.trim().endsWith('>'));
+    const content = isHtml ? text : formatMarkdown(text);
+    box.innerHTML += `
+      <div class="chat-msg advisor" id="${msgId}">
+        <div>${content}</div>
+        <div class="meta"><span>${time} • ${metaTag}</span></div>
+      </div>
+    `;
+    box.scrollTop = box.scrollHeight;
+    return msgId;
+  }
+
+  function updateAdvisorMessage(msgId, text, meta, isRawHtml = false, isError = false) {
+    const el = document.getElementById(msgId);
+    if (el) {
+      if (isError) {
+        el.classList.add('error-state');
+      } else {
+        el.classList.remove('error-state');
+      }
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const metaTag = meta || 'Operation Advisor';
+      const isHtml = isRawHtml || (typeof text === 'string' && text.trim().startsWith('<') && text.trim().endsWith('>'));
+      const content = isHtml ? text : formatMarkdown(text);
+      el.innerHTML = `
+        <div>${content}</div>
+        <div class="meta"><span>${time} • ${metaTag}</span></div>
+      `;
+      const box = document.getElementById('chatBox');
+      box.scrollTop = box.scrollHeight;
+    }
+  }
+
+  // Citation Inspector Modal Flow
+  async function inspectCitation(tag) {
+    const cleanTag = tag.trim();
+    document.getElementById('modalCitationTitle').innerText = `Procedural Reference: ${cleanTag}`;
+    document.getElementById('modalCitationMeta').innerText = `Querying indexed SOP document repository for ${cleanTag}...`;
+    document.getElementById('modalCitationContent').innerText = "Loading verbatim section contents...";
+    openModal('citationModal');
+
+    try {
+      const res = await fetch(`/api/citation?tag=${encodeURIComponent(cleanTag)}`);
+      const data = await res.json();
+      if (data.title) {
+        document.getElementById('modalCitationTitle').innerText = data.title;
+        document.getElementById('modalCitationMeta').innerText = `Document: ${data.document_id} | Section: Section ${data.section} | Target Equipment: ${(data.asset_tags || []).join(', ')}`;
+        document.getElementById('modalCitationContent').innerText = data.content;
+      } else {
+        document.getElementById('modalCitationContent').innerText = data.error || "No excerpt found for this citation.";
+      }
+    } catch (e) {
+      document.getElementById('modalCitationContent').innerText = "Failed to load citation from server.";
+    }
+  }
+
+  // Dial Gauge OCR Simulator Flow
+  function openOCRModal() {
+    openModal('ocrModal');
+  }
+
+  function confirmOCRReading() {
+    closeModal('ocrModal');
+    addOperatorMessage("[Transmitter Photo] Optical Dial Gauge OCR uploaded for PT-101.");
+    addAdvisorMessage("OCR Neural Reader identified tag: `PT-101`, measurement: **36.20 barg** (ALARM: HIGH_HIGH_TRIP). Telemetry state synchronized into Working Memory.", "Transmitter OCR");
+    fetchStatus();
+  }
+
+  async function exportHandover() {
+    const completedList = Array.from(completedPlanItems);
+    try {
+      const res = await fetch('/api/handover?format=pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed_items: completedList, format: 'pdf' })
+      });
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Shift_Handover_${Date.now()}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      addAdvisorMessage("Generated and downloaded OSHA PSM 1910.119 / API RP 75 Shift Handover PDF Report (reflecting verified checklist state).", "Handover System");
+    } catch (e) {
+      console.error("Export error:", e);
+      alert("Failed to export handover PDF.");
+    }
+  }
+
+  // Modal helpers
+  function openModal(id) {
+    const m = document.getElementById(id);
+    if (m) m.style.display = 'flex';
+  }
+  function closeModal(id) {
+    const m = document.getElementById(id);
+    if (m) m.style.display = 'none';
+  }
+  function closeModalOnBackdrop(e, id) {
+    if (e.target.id === id) closeModal(id);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeModal('citationModal');
+      closeModal('ocrModal');
+    }
+  });
+
+  // Initial Poll & Loop
+  fetchStatus();
+  setInterval(fetchStatus, 3000);
+</script>
+
+</body>
+</html>

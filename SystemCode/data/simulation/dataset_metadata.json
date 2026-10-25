@@ -1,0 +1,27 @@
+{
+  "total_rows": 10080,
+  "total_episodes": 24,
+  "sampling_interval_sec": 1.0,
+  "scenarios_included": [
+    "NOMINAL",
+    "PCV_101_STICTION",
+    "LIQUID_CARRYOVER_DEMISTER_FOULING",
+    "COMPRESSOR_K101_SURGE",
+    "EMULSION_PAD_LT102_DRIFT",
+    "WELLHEAD_SLUG_INFLUX"
+  ],
+  "class_distribution": {
+    "NOMINAL": 1680,
+    "PCV_101_STICTION": 1680,
+    "LIQUID_CARRYOVER_DEMISTER_FOULING": 1680,
+    "COMPRESSOR_K101_SURGE": 1680,
+    "EMULSION_PAD_LT102_DRIFT": 1680,
+    "WELLHEAD_SLUG_INFLUX": 1680
+  },
+  "fault_active_rows": 4467,
+  "nominal_rows": 5613,
+  "files": {
+    "csv": "data/simulation/telemetry_timeseries.csv",
+    "parquet": null
+  }
+}

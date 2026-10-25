@@ -1,0 +1,168 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [ 6 0 R 8 0 R ] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 9048 >>
+stream
+q 0.060 0.160 0.320 rg 40.00 740.89 515.28 56.00 re f Q
+BT /F2 14 Tf 1.000 1.000 1.000 rg 1 0 0 1 54.00 774.89 Tm (OSHA PSM 1910.119 / API RP 75 SHIFT HANDOVER REPORT) Tj ET
+BT /F1 10 Tf 0.750 0.880 1.000 rg 1 0 0 1 54.00 758.89 Tm (Central Processing Facility   Train 1 \(V-101 Separator & K-101 Compressor\)) Tj ET
+BT /F3 8 Tf 0.580 0.720 0.880 rg 1 0 0 1 54.00 746.89 Tm (Report Ref: SHR-0C2C9FAE-202610242232  |  Incident: INC-0C2C9FAE  |  Generated: 2026-10-24 22:32:26) Tj ET
+q 0.950 0.970 0.990 rg 1.00 w 0.800 0.860 0.920 RG 40.00 676.89 515.28 48.00 re B Q
+BT /F2 9 Tf 0.150 0.250 0.350 rg 1 0 0 1 50.00 708.89 Tm (Outgoing Shift Lead:) Tj ET
+BT /F1 9 Tf 0.100 0.100 0.100 rg 1 0 0 1 160.00 708.89 Tm (Lead Console Operator) Tj ET
+BT /F2 9 Tf 0.150 0.250 0.350 rg 1 0 0 1 307.64 708.89 Tm (Incoming Shift Lead:) Tj ET
+BT /F1 9 Tf 0.100 0.100 0.100 rg 1 0 0 1 417.64 708.89 Tm (Incoming Shift Lead) Tj ET
+BT /F2 9 Tf 0.150 0.250 0.350 rg 1 0 0 1 50.00 692.89 Tm (Operational Status:) Tj ET
+BT /F2 9 Tf 0.800 0.200 0.100 rg 1 0 0 1 160.00 692.89 Tm (ACTIVE INCIDENT / ABNORMAL) Tj ET
+BT /F2 9 Tf 0.150 0.250 0.350 rg 1 0 0 1 307.64 692.89 Tm (Supervisory Mode:) Tj ET
+BT /F1 9 Tf 0.100 0.100 0.100 rg 1 0 0 1 417.64 692.89 Tm (Level-2 Advisory \(Zero DCS Write\)) Tj ET
+q 0.920 0.950 0.980 rg 40.00 642.89 515.28 18.00 re f Q
+q 0.080 0.350 0.720 rg 40.00 642.89 4.00 18.00 re f Q
+BT /F2 10 Tf 0.060 0.200 0.400 rg 1 0 0 1 50.00 647.89 Tm (1. Executive Summary & Live DCS Telemetry) Tj ET
+BT /F1 9 Tf 0.150 0.150 0.150 rg 1 0 0 1 44.00 634.89 Tm (Process conditions monitored under Level-2 Supervisory advisory envelope:) Tj ET
+q 0.120 0.250 0.420 rg 40.00 602.89 515.28 18.00 re f Q
+BT /F2 9 Tf 1.000 1.000 1.000 rg 1 0 0 1 50.00 607.89 Tm (Instrument Tag) Tj ET
+BT /F2 9 Tf 1.000 1.000 1.000 rg 1 0 0 1 170.00 607.89 Tm (Current Reading) Tj ET
+BT /F2 9 Tf 1.000 1.000 1.000 rg 1 0 0 1 300.00 607.89 Tm (Operating Envelope) Tj ET
+BT /F2 9 Tf 1.000 1.000 1.000 rg 1 0 0 1 430.00 607.89 Tm (Alarm State) Tj ET
+q 0.970 0.980 0.990 rg 0.50 w 0.880 0.910 0.940 RG 40.00 586.89 515.28 16.00 re B Q
+BT /F2 8.5 Tf 0.150 0.200 0.300 rg 1 0 0 1 50.00 590.89 Tm (DPIT-101) Tj ET
+BT /F3 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 170.00 590.89 Tm (0.10 bar) Tj ET
+BT /F1 8.5 Tf 0.350 0.400 0.450 rg 1 0 0 1 300.00 590.89 Tm (0.010 - 0.050 bar) Tj ET
+BT /F2 8.5 Tf 0.800 0.100 0.100 rg 1 0 0 1 430.00 590.89 Tm (TRIP \(HIGH-HIGH\)) Tj ET
+q 1.000 1.000 1.000 rg 0.50 w 0.880 0.910 0.940 RG 40.00 570.89 515.28 16.00 re B Q
+BT /F2 8.5 Tf 0.150 0.200 0.300 rg 1 0 0 1 50.00 574.89 Tm (FT-101) Tj ET
+BT /F3 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 170.00 574.89 Tm (90000.00 Sm3/h) Tj ET
+BT /F1 8.5 Tf 0.350 0.400 0.450 rg 1 0 0 1 300.00 574.89 Tm (50,000 - 80,000 Sm3/h) Tj ET
+BT /F2 8.5 Tf 0.850 0.500 0.000 rg 1 0 0 1 430.00 574.89 Tm (HIGH ALARM) Tj ET
+q 0.970 0.980 0.990 rg 0.50 w 0.880 0.910 0.940 RG 40.00 554.89 515.28 16.00 re B Q
+BT /F2 8.5 Tf 0.150 0.200 0.300 rg 1 0 0 1 50.00 558.89 Tm (LT-101) Tj ET
+BT /F3 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 170.00 558.89 Tm (50.09 %) Tj ET
+BT /F1 8.5 Tf 0.350 0.400 0.450 rg 1 0 0 1 300.00 558.89 Tm (40.0 - 65.0 %) Tj ET
+BT /F2 8.5 Tf 0.100 0.550 0.200 rg 1 0 0 1 430.00 558.89 Tm (NORMAL) Tj ET
+q 1.000 1.000 1.000 rg 0.50 w 0.880 0.910 0.940 RG 40.00 538.89 515.28 16.00 re B Q
+BT /F2 8.5 Tf 0.150 0.200 0.300 rg 1 0 0 1 50.00 542.89 Tm (LT-102) Tj ET
+BT /F3 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 170.00 542.89 Tm (12.80 %) Tj ET
+BT /F1 8.5 Tf 0.350 0.400 0.450 rg 1 0 0 1 300.00 542.89 Tm (40.0 - 65.0 %) Tj ET
+BT /F2 8.5 Tf 0.100 0.550 0.200 rg 1 0 0 1 430.00 542.89 Tm (NORMAL) Tj ET
+q 0.970 0.980 0.990 rg 0.50 w 0.880 0.910 0.940 RG 40.00 522.89 515.28 16.00 re B Q
+BT /F2 8.5 Tf 0.150 0.200 0.300 rg 1 0 0 1 50.00 526.89 Tm (LT-103) Tj ET
+BT /F3 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 170.00 526.89 Tm (5.00 %) Tj ET
+BT /F1 8.5 Tf 0.350 0.400 0.450 rg 1 0 0 1 300.00 526.89 Tm (5.0 - 20.0 %) Tj ET
+BT /F2 8.5 Tf 0.100 0.550 0.200 rg 1 0 0 1 430.00 526.89 Tm (NORMAL) Tj ET
+q 1.000 1.000 1.000 rg 0.50 w 0.880 0.910 0.940 RG 40.00 506.89 515.28 16.00 re B Q
+BT /F2 8.5 Tf 0.150 0.200 0.300 rg 1 0 0 1 50.00 510.89 Tm (PT-101) Tj ET
+BT /F3 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 170.00 510.89 Tm (30.00 barg) Tj ET
+BT /F1 8.5 Tf 0.350 0.400 0.450 rg 1 0 0 1 300.00 510.89 Tm (28.0 - 34.0 barg) Tj ET
+BT /F2 8.5 Tf 0.100 0.550 0.200 rg 1 0 0 1 430.00 510.89 Tm (NORMAL) Tj ET
+q 0.970 0.980 0.990 rg 0.50 w 0.880 0.910 0.940 RG 40.00 490.89 515.28 16.00 re B Q
+BT /F2 8.5 Tf 0.150 0.200 0.300 rg 1 0 0 1 50.00 494.89 Tm (PT-102) Tj ET
+BT /F3 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 170.00 494.89 Tm (29.30 barg) Tj ET
+BT /F1 8.5 Tf 0.350 0.400 0.450 rg 1 0 0 1 300.00 494.89 Tm (27.0 - 33.0 barg) Tj ET
+BT /F2 8.5 Tf 0.100 0.550 0.200 rg 1 0 0 1 430.00 494.89 Tm (NORMAL) Tj ET
+q 1.000 1.000 1.000 rg 0.50 w 0.880 0.910 0.940 RG 40.00 474.89 515.28 16.00 re B Q
+BT /F2 8.5 Tf 0.150 0.200 0.300 rg 1 0 0 1 50.00 478.89 Tm (PT-103) Tj ET
+BT /F3 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 170.00 478.89 Tm (72.00 barg) Tj ET
+BT /F1 8.5 Tf 0.350 0.400 0.450 rg 1 0 0 1 300.00 478.89 Tm (70.0 - 80.0 barg) Tj ET
+BT /F2 8.5 Tf 0.100 0.550 0.200 rg 1 0 0 1 430.00 478.89 Tm (NORMAL) Tj ET
+q 0.970 0.980 0.990 rg 0.50 w 0.880 0.910 0.940 RG 40.00 458.89 515.28 16.00 re B Q
+BT /F2 8.5 Tf 0.150 0.200 0.300 rg 1 0 0 1 50.00 462.89 Tm (VT-101) Tj ET
+BT /F3 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 170.00 462.89 Tm (2.30 mm/s) Tj ET
+BT /F1 8.5 Tf 0.350 0.400 0.450 rg 1 0 0 1 300.00 462.89 Tm (0.50 - 3.80 mm/s) Tj ET
+BT /F2 8.5 Tf 0.100 0.550 0.200 rg 1 0 0 1 430.00 462.89 Tm (NORMAL) Tj ET
+BT /F2 8.5 Tf 0.700 0.200 0.100 rg 1 0 0 1 44.00 446.89 Tm (Active Symptoms: SYM_LOW_INTERFACE) Tj ET
+q 0.920 0.950 0.980 rg 40.00 415.39 515.28 18.00 re f Q
+q 0.080 0.350 0.720 rg 40.00 415.39 4.00 18.00 re f Q
+BT /F2 10 Tf 0.060 0.200 0.400 rg 1 0 0 1 50.00 420.39 Tm (2. Diagnosed Root Causes & Bayesian Posterior Beliefs) Tj ET
+BT /F2 8.5 Tf 0.150 0.150 0.150 rg 1 0 0 1 44.00 407.39 Tm (1. Emulsion Rag Layer & LT-102 Drift \(H05\) - 61.3% confidence) Tj ET
+BT /F1 8.5 Tf 0.150 0.150 0.150 rg 1 0 0 1 44.00 393.89 Tm (2. Wellhead Transient Slug Influx \(H06\) - 20.8% confidence) Tj ET
+BT /F1 8.5 Tf 0.150 0.150 0.150 rg 1 0 0 1 44.00 380.39 Tm (3. Separator Foaming & Demister Carryover \(H03\) - 8.9% confidence) Tj ET
+q 0.920 0.950 0.980 rg 40.00 348.89 515.28 18.00 re f Q
+q 0.080 0.350 0.720 rg 40.00 348.89 4.00 18.00 re f Q
+BT /F2 10 Tf 0.060 0.200 0.400 rg 1 0 0 1 50.00 353.89 Tm (3. Actions Executed & Active Remediation Sequence) Tj ET
+BT /F1 8.5 Tf 0.400 0.400 0.400 rg 1 0 0 1 44.00 340.89 Tm (No corrective actions executed during this shift.) Tj ET
+BT /F2 8.5 Tf 0.150 0.150 0.150 rg 1 0 0 1 44.00 327.39 Tm (Outstanding Plan Sequence:) Tj ET
+q 1.000 1.000 1.000 rg 1.00 w 0.700 0.750 0.800 RG 46.00 301.89 11.00 11.00 re B Q
+BT /F1 9 Tf 0.200 0.250 0.300 rg 1 0 0 1 64.00 303.89 Tm (Step 1: Isolate and Flush LT-102 External Level Bridle \(ACT_04_FLUSH_INTERFACE_BRIDLE\)) Tj ET
+BT /F1 8 Tf 0.450 0.500 0.550 rg 1 0 0 1 64.00 299.89 Tm (Target: LT-102 | Estimated Time: 8 min) Tj ET
+q 0.920 0.950 0.980 rg 40.00 273.89 515.28 18.00 re f Q
+q 0.080 0.350 0.720 rg 40.00 273.89 4.00 18.00 re f Q
+BT /F2 10 Tf 0.060 0.200 0.400 rg 1 0 0 1 50.00 278.89 Tm (4. Field Verification Checks \(Completed vs. Pending for Incoming Crew\)) Tj ET
+BT /F1 8.5 Tf 0.400 0.400 0.400 rg 1 0 0 1 44.00 265.89 Tm (No field checks completed yet during this shift.) Tj ET
+BT /F2 8.5 Tf 0.700 0.300 0.000 rg 1 0 0 1 44.00 252.39 Tm (Pending Checks for Incoming Shift Lead:) Tj ET
+q 1.000 1.000 1.000 rg 1.00 w 0.700 0.750 0.800 RG 46.00 226.89 11.00 11.00 re B Q
+BT /F1 9 Tf 0.200 0.250 0.300 rg 1 0 0 1 64.00 228.89 Tm (CHK_04_THIEF_SAMPLE_EMULSION: Take Manual Thief Sample from V-101 Interface Try-Cocks) Tj ET
+BT /F1 8 Tf 0.450 0.500 0.550 rg 1 0 0 1 64.00 224.89 Tm (Target: V-101 | Priority: 1 | Mandatory Verification) Tj ET
+q 0.920 0.950 0.980 rg 40.00 198.89 515.28 18.00 re f Q
+q 0.080 0.350 0.720 rg 40.00 198.89 4.00 18.00 re f Q
+BT /F2 10 Tf 0.060 0.200 0.400 rg 1 0 0 1 50.00 203.89 Tm (5. Grounded Technical References \(SOPs & HAZOP Safeguards\)) Tj ET
+BT /F2 8.5 Tf 0.100 0.300 0.600 rg 1 0 0 1 44.00 190.89 Tm ([SOP-V101 Section 3]: Section 3. Emulsion Layer & Oil-Water Interface Control) Tj ET
+BT /F1 8 Tf 0.350 0.350 0.350 rg 1 0 0 1 44.00 177.39 Tm (Excerpt: - **Target Interface Level \(LT-102\):** 50% - **Interface Range \(Clean separation\):** 40% - 60%...) Tj ET
+BT /F2 8.5 Tf 0.100 0.300 0.600 rg 1 0 0 1 44.00 164.39 Tm ([SOP-V101 Section 2]: Section 2. Demister Fouling, Carryover & Foaming Mitigation) Tj ET
+BT /F1 8 Tf 0.350 0.350 0.350 rg 1 0 0 1 44.00 150.89 Tm (Excerpt: - **Normal Clean Demister DP \(DPIT-101\):** 0.015 - 0.035 bar - **Fouling Warning Threshold:** > 0.050 bar...) Tj ET
+q 0.920 0.950 0.980 rg 40.00 119.89 515.28 18.00 re f Q
+q 0.080 0.350 0.720 rg 40.00 119.89 4.00 18.00 re f Q
+BT /F2 10 Tf 0.060 0.200 0.400 rg 1 0 0 1 50.00 124.89 Tm (6. Formal Shift Handover Sign-off & Regulatory Endorsement) Tj ET
+
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 9 0 R >>
+endobj
+9 0 obj
+<< /Length 1475 >>
+stream
+q 0.120 0.250 0.450 rg 40.00 811.89 515.28 1.50 re f Q
+BT /F2 8 Tf 0.300 0.400 0.500 rg 1 0 0 1 40.00 815.89 Tm (OSHA PSM 1910.119 / API RP 75 SHIFT HANDOVER REPORT) Tj ET
+BT /F1 8 Tf 0.400 0.500 0.600 rg 1 0 0 1 435.28 815.89 Tm (DECISION SUPPORT COCKPIT) Tj ET
+q 0.800 0.850 0.900 rg 40.00 42.00 515.28 0.80 re f Q
+BT /F1 8 Tf 0.450 0.500 0.550 rg 1 0 0 1 40.00 30.00 Tm (CPF TRAIN 1   LEVEL-2 READ-ONLY SUPERVISORY ADVISOR) Tj ET
+BT /F2 8 Tf 0.300 0.400 0.500 rg 1 0 0 1 510.28 30.00 Tm (Page 2) Tj ET
+q 0.980 0.990 1.000 rg 1.00 w 0.750 0.820 0.900 RG 40.00 721.89 249.64 75.00 re B Q
+BT /F2 8.5 Tf 0.100 0.250 0.450 rg 1 0 0 1 50.00 782.89 Tm (OUTGOING SHIFT OPERATOR) Tj ET
+BT /F1 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 50.00 768.89 Tm (Name / Role: Lead Console Operator) Tj ET
+BT /F1 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 50.00 748.89 Tm (Signature: __________________________) Tj ET
+BT /F3 8 Tf 0.400 0.450 0.500 rg 1 0 0 1 50.00 734.89 Tm (Timestamp: 2026-10-24 22:32:26) Tj ET
+q 0.980 0.990 1.000 rg 1.00 w 0.750 0.820 0.900 RG 305.64 721.89 249.64 75.00 re B Q
+BT /F2 8.5 Tf 0.100 0.250 0.450 rg 1 0 0 1 315.64 782.89 Tm (INCOMING SHIFT SUPERVISOR) Tj ET
+BT /F1 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 315.64 768.89 Tm (Name / Role: Incoming Shift Lead) Tj ET
+BT /F1 8.5 Tf 0.100 0.100 0.100 rg 1 0 0 1 315.64 748.89 Tm (Signature: __________________________) Tj ET
+BT /F3 8 Tf 0.400 0.450 0.500 rg 1 0 0 1 315.64 734.89 Tm (Timestamp: _____-_____-_____  ____:____) Tj ET
+
+endstream
+endobj
+xref
+0 10
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000129 00000 n 
+0000000226 00000 n 
+0000000328 00000 n 
+0000000423 00000 n 
+0000000575 00000 n 
+0000009675 00000 n 
+0000009827 00000 n 
+trailer
+<< /Size 10 /Root 1 0 R >>
+startxref
+11354
+%%EOF

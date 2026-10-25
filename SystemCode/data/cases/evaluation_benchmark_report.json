@@ -1,0 +1,130 @@
+{
+  "timestamp": "2026-10-14T19:16:46.445611",
+  "classifier_metrics": {
+    "models": {
+      "knn": {
+        "accuracy": 0.959,
+        "macro_f1": 0.9517
+      },
+      "decision_tree": {
+        "accuracy": 0.9722,
+        "macro_f1": 0.9685
+      },
+      "random_forest": {
+        "accuracy": 0.9775,
+        "macro_f1": 0.9752
+      },
+      "mlp": {
+        "accuracy": 0.9669,
+        "macro_f1": 0.9626
+      }
+    },
+    "best_model": "random_forest",
+    "best_macro_f1": 0.9752,
+    "target_met": true
+  },
+  "bayesian_metrics": {
+    "prior_entropy_bits": 2.729,
+    "h01_posterior_prob": 0.6333,
+    "h01_entropy_reduction_bits": 1.243,
+    "h03_posterior_prob": 0.6942,
+    "h03_entropy_reduction_bits": 1.664,
+    "mean_brier_score": 0.114,
+    "target_met": true
+  },
+  "planning_metrics": {
+    "mean_planning_latency_ms": 0.03,
+    "p95_planning_latency_ms": 0.06,
+    "plan_steps_count": 1,
+    "plan_is_feasible": true,
+    "replan_feasible_under_block": true,
+    "replan_latency_ms": 0.04,
+    "target_met": true
+  },
+  "recommender_metrics": {
+    "apriori_rules_count": 10,
+    "svd_hit_rate_at_3": 0.8,
+    "cold_start_fallback_working": true,
+    "target_met": true
+  },
+  "nlu_metrics": {
+    "intent_accuracy": 1.0,
+    "slot_accuracy": 1.0,
+    "test_cases_count": 6,
+    "target_met": true
+  },
+  "rag_metrics": {
+    "indexed_passages_count": 11,
+    "search_retrieval_working": true,
+    "explanation_citations_verified": true,
+    "hallucination_detection_working": true,
+    "target_met": true
+  },
+  "safety_metrics": {
+    "prohibited_dcs_write_rejected": true,
+    "spurious_flaring_rejected": true,
+    "thermodynamic_inversion_rejected": true,
+    "rejection_rate_pct": 100.0,
+    "target_met": true
+  },
+  "scenario_walkthrough_results": {
+    "scenarios": {
+      "NOMINAL": {
+        "expected_hypothesis": "H07",
+        "diagnosed_hypothesis": "H07",
+        "confidence_pct": 25.0,
+        "correct_diagnosis": true,
+        "response_plan_steps": 0,
+        "citations_count": 2,
+        "handover_generated": true
+      },
+      "PCV_STICTION": {
+        "expected_hypothesis": "H01",
+        "diagnosed_hypothesis": "H01",
+        "confidence_pct": 63.3,
+        "correct_diagnosis": true,
+        "response_plan_steps": 1,
+        "citations_count": 2,
+        "handover_generated": true
+      },
+      "LIQUID_CARRYOVER": {
+        "expected_hypothesis": "H03",
+        "diagnosed_hypothesis": "H03",
+        "confidence_pct": 48.0,
+        "correct_diagnosis": true,
+        "response_plan_steps": 1,
+        "citations_count": 2,
+        "handover_generated": true
+      },
+      "COMPRESSOR_SURGE": {
+        "expected_hypothesis": "H04",
+        "diagnosed_hypothesis": "H04",
+        "confidence_pct": 57.3,
+        "correct_diagnosis": true,
+        "response_plan_steps": 1,
+        "citations_count": 2,
+        "handover_generated": true
+      },
+      "EMULSION_PAD": {
+        "expected_hypothesis": "H05",
+        "diagnosed_hypothesis": "H05",
+        "confidence_pct": 61.3,
+        "correct_diagnosis": true,
+        "response_plan_steps": 0,
+        "citations_count": 2,
+        "handover_generated": true
+      },
+      "SLUG_INFLUX": {
+        "expected_hypothesis": "H06",
+        "diagnosed_hypothesis": "H06",
+        "confidence_pct": 63.2,
+        "correct_diagnosis": true,
+        "response_plan_steps": 0,
+        "citations_count": 2,
+        "handover_generated": true
+      }
+    },
+    "all_scenarios_passed": true
+  },
+  "all_targets_met": true
+}
